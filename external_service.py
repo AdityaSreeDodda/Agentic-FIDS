@@ -27,7 +27,7 @@ async def call_fids_deploy(ip: str) -> tuple[int, dict]:
 
     logger.info("Calling FIDS deploy for IP %s", ip)
 
-    async with httpx.AsyncClient(timeout=30) as client:
+    async with httpx.AsyncClient(timeout=30, verify=False) as client:
         res = await client.post(
             settings.FIDS_DEPLOY_URL,
             params=params,

@@ -31,7 +31,7 @@ async def health():
     return {"status": "ok"}
 
 
-@app.post("/api/v1/fids/down", response_model=FidsResponse)
+@app.post("/api/fids/start", response_model=FidsResponse)
 async def fids_down(ip: str = Query(..., description="IP address of the FIDS display")):
     try:
         result = await handle_fids_down(ip)
