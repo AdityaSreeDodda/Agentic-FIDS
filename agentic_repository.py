@@ -18,7 +18,7 @@ async def create_agentic_action(ticket_id: str, ip: str) -> str:
     )
     VALUES (
         $1, $2, $3, $4, $5::jsonb,
-        'approved', $6, 'System'
+        'executed', $6, 'Auto-Approved'
     )
     RETURNING id;
     """

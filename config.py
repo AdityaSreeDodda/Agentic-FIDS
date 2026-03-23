@@ -16,7 +16,7 @@ class Settings(BaseSettings):
 
     ALLOWED_FIDS_IPS: str = "10.0.89.199"
 
-    DEFAULT_LOCATION: str = "HYD Terminal 1"
+    DEFAULT_LOCATION: str = "RGIA"
     DEFAULT_APP_NAME: str = "FIDS"
     DEFAULT_ERROR_TYPE: str = "display_down"
     DEFAULT_ASSIGNEE: str = "FIDS Support"
