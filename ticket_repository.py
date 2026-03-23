@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 async def create_ticket(ip: str) -> str:
     ticket_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc)
+    now = datetime.utcnow()
 
     query = """
     INSERT INTO tickets (

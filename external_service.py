@@ -7,7 +7,7 @@ from config import settings
 logger = logging.getLogger(__name__)
 
 
-async def call_fids_deploy(ip: str) -> tuple[int, dict]:
+async def call_fids_deploy(ip: str) -> tuple[int, dict | str]:
     """Trigger FIDS install-file deploy for the given IP."""
 
     params = {
@@ -35,4 +35,7 @@ async def call_fids_deploy(ip: str) -> tuple[int, dict]:
         )
 
     logger.info("FIDS deploy response: status=%d", res.status_code)
-    return res.status_code, res.json()
+    try:
+        return res.status_code, res.json()
+    except Exception:
+        return res.status_code, res.text
