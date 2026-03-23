@@ -46,3 +46,14 @@ async def create_ticket(ip: str) -> str:
 
     logger.info("Ticket created: %s for IP %s", row["id"], ip)
     return row["id"]
+
+
+async def close_ticket(ticket_id: str) -> None:
+    now = datetime.utcnow()
+    query = """
+    UPDATE tickets
+    SET status = 'closed', updated_at = $1
+    WHERE id = $2;
+    """
+    await db.pool.execute(query, now, ticket_id)
+    logger.info("Ticket closed: %s", ticket_id)
