@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     FIDS_DEVICE_PASSWORD: str
     FIDS_LOG_FILE_PATH: str
 
+    FIDS_APP_MONITOR_URL: str
+    FIDS_APP_MONITOR_COOKIE: str
+
     ALLOWED_FIDS_IPS: str = "10.0.89.199"
 
     DEFAULT_LOCATION: str = "RGIA"

@@ -3,7 +3,7 @@ import logging
 from agentic_repository import create_agentic_action
 from audit_repository import create_audit_log
 from config import settings
-from external_service import call_fids_deploy
+from external_service import call_fids_deploy, call_fids_monitor
 from ticket_repository import close_ticket, create_ticket
 from validators import validate_ip
 
@@ -42,6 +42,21 @@ async def handle_fids_down(ip: str) -> dict:
         "ticket_id": ticket_id,
         "agentic_action_id": action_id,
         "audit_log_id": audit_id,
+        "external_status": status_code,
+        "external_response": response,
+    }
+
+
+async def check_fids_status(ip: str) -> dict:
+    ip = validate_ip(ip)
+
+    if ip not in settings.allowed_ips:
+        raise ValueError(f"IP {ip} is not in the allowed list")
+
+    logger.info("Checking FIDS status for IP %s", ip)
+    status_code, response = await call_fids_monitor(ip)
+
+    return {
         "external_status": status_code,
         "external_response": response,
     }

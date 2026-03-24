@@ -39,3 +39,33 @@ async def call_fids_deploy(ip: str) -> tuple[int, dict | str]:
         return res.status_code, res.json()
     except Exception:
         return res.status_code, res.text
+
+
+async def call_fids_monitor(ip: str) -> tuple[int, dict | str]:
+    """Trigger FIDS app monitor for the given IP."""
+    payload = {
+        "methodtype": "POST",
+        "key": "/app/refresh-page",
+        "ip": [ip]
+    }
+
+    headers = {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        "Cookie": settings.FIDS_APP_MONITOR_COOKIE,
+    }
+
+    logger.info("Calling FIDS monitor for IP %s", ip)
+
+    async with httpx.AsyncClient(timeout=20, verify=False) as client:
+        res = await client.post(
+            settings.FIDS_APP_MONITOR_URL,
+            json=payload,
+            headers=headers,
+        )
+
+    logger.info("FIDS monitor response: status=%d", res.status_code)
+    try:
+        return res.status_code, res.json()
+    except Exception:
+        return res.status_code, res.text

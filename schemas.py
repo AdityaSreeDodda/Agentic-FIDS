@@ -9,4 +9,10 @@ class FidsResponse(BaseModel):
     agentic_action_id: Optional[str] = None
     audit_log_id: Optional[str] = None
     external_status: int
-    external_response: dict[str, Any] | str
+    external_response: dict[str, Any] | list[Any] | str
+
+
+class FidsMonitorResponse(BaseModel):
+    success: bool
+    external_status: int
+    external_response: dict[str, Any] | list[Any] | str

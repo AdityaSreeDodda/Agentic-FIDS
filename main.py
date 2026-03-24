@@ -4,8 +4,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Query
 
 from db import close_db, connect_db
-from fids_service import handle_fids_down
-from schemas import FidsResponse
+from fids_service import check_fids_status, handle_fids_down
+from schemas import FidsMonitorResponse, FidsResponse
 
 logging.basicConfig(
     level=logging.INFO,
@@ -44,3 +44,18 @@ async def fids_down(ip: str = Query(..., description="IP address of the FIDS dis
     except Exception as e:
         logger.exception("Unexpected error handling FIDS down for IP %s", ip)
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@app.post("/api/fids/monitor", response_model=FidsMonitorResponse)
+async def fids_monitor(ip: str = Query(..., description="IP address of the FIDS display")):
+    try:
+        result = await check_fids_status(ip)
+        return {
+            "success": True,
+            **result,
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.exception("Unexpected error checking FIDS status for IP %s", ip)
+        raise HTTPException(status_code=500, detail="Internal server error")
